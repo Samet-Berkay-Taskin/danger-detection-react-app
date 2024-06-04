@@ -14,8 +14,8 @@ Bu proje, backend ve frontend olmak üzere iki aşamadan oluşmaktadır. Bu repo
 
 1. Projeyi Klonlayın:
    ```bash
-   git clone https://github.com/kullanici-adi/tehlike-tespit-arayuz.git
-   cd tehlike-tespit-arayuz
+   git clone https://github.com/Samet-Berkay-Taskin/danger-detection-react-app.git
+   cd danger-detection-react-app
    ```
 
 2. Gerekli Bağımlılıkları Yükleyin:
