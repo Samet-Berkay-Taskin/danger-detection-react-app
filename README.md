@@ -1,30 +1,39 @@
-# React + TypeScript + Vite
+# Tehlike Tespit Arayüzü (React + TypeScript + Vite + Tailwind)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+Bu proje, backend ve frontend olmak üzere iki aşamadan oluşmaktadır. Bu repository, projenin frontend kısmını içermektedir. Ancak projeyi tamamlayabilmek için backend kısmını da kurmanız gerekmektedir. Backend kısmının kodlarına BU LİNKTEN ulaşabilir ve projeyi tamamlayabilirsiniz.Projede, YOLOv8 modeli kullanılarak geliştirilmiş bir nesne tespit uygulaması bulunmaktadır. Bu uygulama, belirli nesneleri tanıyan dört farklı model içermektedir. Kullanıcılar, uygulamanın arayüzü üzerinden videoları ve fotoğrafları yükleyebilir, YouTube'dan video linki verebilir ve tespit sonuçlarını görüntüleyebilir veya indirebilirler. Ayrıca, hangi modelin kullanılacağını seçme seçeneği bulunmaktadır.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Kullanılan Teknolojiler
+- React.js
+- TypeScript
+- Vite
+- Tailwind CSS
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Kurulum ve Çalıştırma
 
-- Configure the top-level `parserOptions` property like this:
+1. Projeyi Klonlayın:
+   ```bash
+   git clone https://github.com/kullanici-adi/tehlike-tespit-arayuz.git
+   cd tehlike-tespit-arayuz
+   ```
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+2. Gerekli Bağımlılıkları Yükleyin:
+   ```bash
+   npm install
+   ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+3. Projeyi Başlatın:
+   ```bash
+   npm run dev
+   ```
+
+   ## Kullanım
+
+1. **Görüntü veya Video Yükleme:**
+   - Arayüze, analiz yapılacak fotoğraf veya video dosyasını yükleyebilirsiniz.
+   - Alternatif olarak, YouTube'dan bir video linki girebilirsiniz.
+
+2. **Sonuçları Görüntüleme ve İndirme:**
+   - Yüklediğiniz dosyaların analizi gerçek zamanlı olarak yapılacak ve sonuçlar arayüzde görselleştirilecektir.
+   - Analiz sonuçlarını isterseniz indirebilir veya arayüz üzerinde görüntüleyebilirsiniz.
