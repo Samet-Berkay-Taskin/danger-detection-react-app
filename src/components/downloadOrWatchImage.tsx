@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import { Button, Select } from 'antd';
 import { DownloadOutlined, AreaChartOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import { get_detected_photo, getPhotos } from '../services';
 
 export default function DownloadOrWatchImage() {
     const [imageNames, setImagesNames] = useState<any>('');
@@ -17,71 +17,57 @@ export default function DownloadOrWatchImage() {
     }, [selectedImageName])
 
     useEffect(() => {
-        const images = async () => {
-            try {
-                const response = await axios.get('http://127.0.0.1:5000/getPhotos');
+        getPhotos()
+            .then((response: any) => {
                 if (response.data?.photos === '')
-                    setImagesNames([])
+                    setImagesNames([]);
                 else
-                    setImagesNames(response.data?.photos.map((item: any) => {
-                        return {
-                            label: item,
-                            value: item
-                        }
-                    }));
-            } catch (error) {
+                    setImagesNames(response.data?.photos.map((item: any) => ({
+                        label: item,
+                        value: item
+                    })));
+            })
+            .catch((error) => {
                 console.error(error);
-            }
-        }
-        images()
-    }, [])
+            });
+    }, []);
+
 
     const handleChangeImgName = (value: string) => {
         setSelectedImageName(value)
     }
 
-    const handleShow = async () => {
+    const handleShow = () => {
         setOpen(!open)
 
-        try {
-            const response = await axios.get(`http://127.0.0.1:5000/get_detected_photo?photo_name=${selectedImageName}`, {
-                responseType: 'blob' // Bu dosyanın bir blob olduğunu belirtiyoruz.
-            });
+        get_detected_photo(selectedImageName)
+            .then((response: any) => {
+                // Blob URL'sini oluştur
+                const blobUrl = window.URL.createObjectURL(new Blob([response?.data]));
 
-            // Blob URL'sini oluştur
-            const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                // Görüntülemek için yeni bir Image elementi oluştur
+                const img = new Image();
+                img.src = blobUrl;
 
-            // Görüntülemek için yeni bir Image elementi oluştur
-            const img = new Image();
-            img.src = blobUrl;
-
-            // Image elementini görüntülemek için bir div'e ekleyin
-            const imageContainer = document.getElementById('imageContainer');
-            imageContainer.innerHTML = ''; // Önceki görüntüyü temizle
-            imageContainer.appendChild(img);
-
-        } catch (error) {
-            console.error('Fotoğraf Gösterme hatası:', error);
-        }
+                // Image elementini görüntülemek için bir div'e ekleyin
+                const imageContainer = document.getElementById('imageContainer');
+                imageContainer.innerHTML = ''; // Önceki görüntüyü temizle
+                imageContainer.appendChild(img);
+            })
     };
 
-    const handleDownload = async () => {
-        try {
-            const response = await axios.get(`http://127.0.0.1:5000/get_detected_photo?photo_name=${selectedImageName}`, {
-                responseType: 'blob' // Bu dosyanın bir blob olduğunu belirtiyoruz.
-            });
+    const handleDownload = () => {
+        get_detected_photo(selectedImageName)
+            .then((response: any) => {
+                // Tarayıcıda dosyayı indirmek için bir bağlantı oluşturuyoruz.
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', selectedImageName);
+                document.body.appendChild(link);
+                link.click();
 
-            // Tarayıcıda dosyayı indirmek için bir bağlantı oluşturuyoruz.
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', selectedImageName);
-            document.body.appendChild(link);
-            link.click();
-            console.log(response.data)
-        } catch (error) {
-            console.error('Fotoğraf indirme hatası:', error);
-        }
+            })
     };
 
     return (

@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Radio } from 'antd';
+import { select_model } from '../services';
 
 interface Model {
     model: string;
@@ -17,9 +17,6 @@ export const SelectModel = () => {
     ]
 
     useEffect(() => {
-        const select_model = async (selectedModel) => {
-            axios.post('http://127.0.0.1:5000/selectModel', selectedModel);
-        }
         select_model(selectedModel)
     }, [selectedModel])
 
