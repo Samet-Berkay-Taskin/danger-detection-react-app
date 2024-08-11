@@ -20,7 +20,7 @@ Axios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
     // Do something with response error
-    if (error.response.status === 404) {
+    if (error.response) {
         null
     }
     else {
