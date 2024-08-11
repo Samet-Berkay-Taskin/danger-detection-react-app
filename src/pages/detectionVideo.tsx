@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import '../style/index.css'
 import { Button, Input } from 'antd';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from '../components/loading';
 import { SelectModel } from '../components/selectModel';
+import { videoUpload } from '../services';
 
 
 function DetectionVideo() {
@@ -17,25 +17,15 @@ function DetectionVideo() {
     }
 
     useEffect(() => {
-        const uploadVideo = async () => {
+        const uploadVideo = () => {
             const formData = new FormData();
             formData.append('file', source[0]);
 
             setLoading(true)
-            const response = await axios.post('http://127.0.0.1:5000/videoUpload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                withCredentials: true
-            });
-            if (response.status === 200) {
+            videoUpload(formData).then(() => {
                 toast.success('Video başarılı bir şekilde yüklendi ve tespit yapıldı.')
                 setLoading(false);
-            }
-            else {
-                toast.error('Video yüklenemedi...')
-                setLoading(false);
-            }
+            })
         }
         if (source) {
             uploadVideo()

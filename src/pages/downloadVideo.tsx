@@ -3,28 +3,27 @@ import { LinkOutlined } from '@ant-design/icons';
 import { Input, Button } from 'antd';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
 import Loading from '../components/loading';
 import { SelectModel } from '../components/selectModel';
+import { download } from '../services';
 
 
 export default function DownloadVideo() {
     const [url, setUrl] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false)
 
-    const postUrlVideo = async () => {
+    const postUrlVideo = () => {
         setLoading(true);
 
-        const response = await axios.post('http://127.0.0.1:5000/download-video', { text: url })
+        download(url)
+            .then(() => {
+                toast.success('Linkteki video başarılı bir şekilde inidirdi ve tespit yapıldı.')
+                setLoading(false);
 
-        if (response.status === 200) {
-            toast.success('Linkteki video başarılı bir şekilde inidirdi ve tespit yapıldı.')
-            setLoading(false);
-        }
-        else {
-            toast.error('Video İndirilemedi...')
-            setLoading(false);
-        }
+            }).catch((error) => {
+                toast.error('Video İndirilemedi...')
+                setLoading(false);
+            })
     }
 
     return (

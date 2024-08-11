@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import '../style/index.css'
 import { Button, Input } from 'antd';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { SelectModel } from '../components/selectModel';
+import { imageUpload } from '../services';
 
 
 function DetectionImage() {
@@ -16,22 +16,17 @@ function DetectionImage() {
     }
 
     useEffect(() => {
-        const uploadImg = async () => {
+        const uploadImg = () => {
             const formData = new FormData();
             formData.append('file', source[0]);
 
-            const response = await axios.post('http://127.0.0.1:5000/imageUpload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                withCredentials: true
-            });
-            if (response.status === 200) {
-                toast.success('Görsel başarılı bir şekilde yüklendi ve tespit yapıldı.')
-            }
-            else {
-                toast.error('Görsel yüklenemedi...')
-            }
+            imageUpload(formData)
+                .then(() => {
+                    toast.success('Görsel başarılı bir şekilde yüklendi ve tespit yapıldı.')
+                })
+                .catch((error) => {
+                    toast.error('Görsel yüklenemedi...')
+                })
         }
         if (source) {
             uploadImg()
